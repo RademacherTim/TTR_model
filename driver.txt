@@ -1,0 +1,10 @@
+!========================================================================================!
+! This file provides the parameters for running the Thornley Transport Resistance (TTR) 
+! Model for forests as programmed by Tim Tito Rademacher
+!----------------------------------------------------------------------------------------!
+
+   100              ! Number of years in the simulation
+    50              ! Number of steps per day. Thornley (1991) set this to 50
+   0.1              ! Number of stems in the simulation
+ FALSE              ! Boolean to decide whether to use Liebig's law of the minimum or Mitscherlich's law of constant activity
+!========================================================================================!
