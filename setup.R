@@ -36,9 +36,13 @@ dt     = 1 / stps_per_day
 tstps  = length (concentrations [,1])
 days   = dt * tstps
 hours  = dt * tstps * 24.0
+years  = dt * tstps * 24.0 * 365.25
 if (days > 365) {
   xlab_time = 'Time [years]'
-  labels    = seq (1, floor (tstps / 365.25), by = 1)
+  xmax      = ceiling (years)
+  labels    = seq (1, xmax, by = 1)
+  ats       = seq (1, xmax, by = 1) * 365.25 / dt
+  xmax      = xmax * 365.25 / dt
 } else if (days > 1) {
   xlab_time = 'Time [days]'
   xmax      = ceiling (days) 
