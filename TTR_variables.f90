@@ -326,11 +326,22 @@ module TTR_variables
  !---------------------------------------------------------------------------------------!
  real (dp) :: sigma_N
  !---------------------------------------------------------------------------------------!
- ! Parameter activating Liebig's law of the minimum
+ ! Boolean activating Liebig's law of the minimum
  !---------------------------------------------------------------------------------------!
- logical:: LIEBIG 
+ logical :: LIEBIG 
  !---------------------------------------------------------------------------------------!
- 
+ ! Boolean activating outputs 
+ !---------------------------------------------------------------------------------------!
+ logical :: REPORTING
+ logical :: R_POOLS
+ logical :: R_GROWTH
+ logical :: R_LOSS
+ logical :: R_UTILISATION
+ logical :: R_RESPIRATION
+ logical :: R_TRANSPORT
+ logical :: R_INCREMENTS
+ logical :: R_CONCENTRATIONS
+ logical :: R_UPTAKE
  !---------------------------------------------------------------------------------------!
 end module TTR_variables
 !========================================================================================!

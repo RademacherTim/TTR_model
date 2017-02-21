@@ -11,12 +11,6 @@
 #----------------------------------------------------------------------------------------#
 source ('setup.R')
 
-# Read in the pool data
-#----------------------------------------------------------------------------------------#
-loss <- read.table (file = 'tmp/loss.txt',        header = T)
-resp <- read.table (file = 'tmp/respiration.txt', header = T)
-util <- read.table (file = 'tmp/utilisation.txt', header = T)
-
 # Plot pLant drymass loss
 #----------------------------------------------------------------------------------------#
 png (file = 'fig/plant_loss.png')

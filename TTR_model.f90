@@ -114,6 +114,16 @@ program TTR_model
  read (10, '(i6)')   stps_per_day
  read (10, '(f6.1)') n_stems 
  read (10, '(l6)')   LIEBIG 
+ read (10, '(l6)')   REPORTING
+ read (10, '(l6)')   R_POOLS
+ read (10, '(l6)')   R_GROWTH
+ read (10, '(l6)')   R_LOSS
+ read (10, '(l6)')   R_UTILISATION
+ read (10, '(l6)')   R_RESPIRATION
+ read (10, '(l6)')   R_TRANSPORT
+ read (10, '(l6)')   R_INCREMENTS
+ read (10, '(l6)')   R_CONCENTRATIONS
+ read (10, '(l6)')   R_UPTAKE
  write (*, *) 
  write (*, '(a36)') '             TTR Model             '
  write (*, '(a36)') ' programmed by Tim Tito Rademacher '
@@ -150,59 +160,33 @@ program TTR_model
  !---------------------------------------------------------------------------------------!
  ! Write headers to output files
  !---------------------------------------------------------------------------------------!
- 1000 format (i15, 20f15.8) ! pools.txt
- 1001 format (i15, 11f15.8) ! growth.txt
- 1002 format (i15, 10f15.8) ! loss.txt
- 1003 format (i15, 10f15.8) ! utilisation.txt
- 1004 format (i15, 10f15.8) ! respiration.txt
- 1005 format (i15,  8f15.8) ! transport.txt
- 1006 format (i15, 21f15.8) ! increments.txt
- 1007 format (i15, 11f15.8) ! concentrations.txt
- 1008 format (i15,  4f15.8) ! uptake.txt
- write (20, '(21a15)') 't', 'M_l_C','M_b_C','M_s_C','M_c_C','M_f_C',                     &
-                            'M_l_N','M_b_N','M_s_N','M_c_N','M_f_N',                     &
-                            'M_l_M','M_b_M','M_s_M','M_c_M','M_f_M',                     &
-                            'M_l_X','M_b_X','M_s_X','M_c_X','M_f_X'
- write (20, 1000) t, M_l_C, M_b_C, M_s_C, M_c_C, M_f_C,                      &
-                                 M_l_N, M_b_N, M_s_N, M_c_N, M_f_N,                      &
-                                 M_l_M, M_b_M, M_s_M, M_c_M, M_f_M,                      &
-                                 M_l_X, M_b_X, M_s_X, M_c_X, M_f_X
- write (21, '(12a15)') 't', 'G_A_l', 'G_M_l_X','G_M_b_X','G_M_s_X','G_M_c_X','G_M_f_X',  &
-                            'G_M_l_M','G_M_b_M','G_M_s_M','G_M_c_M','G_M_f_M'
- write (21, 1001) t, G_A_l, G_M_l_X, G_M_b_X, G_M_s_X, G_M_c_X, G_M_f_X,     &
-                                 G_M_l_M, G_M_b_M, G_M_s_M, G_M_c_M, G_M_f_M 
- write (22, '(11a15)') 't', 'L_M_l_M_dif', 'L_M_l_X_lit', 'L_M_b_M_dif', 'L_M_b_X_lit',  &
-                            'L_M_s_M_dif', 'L_M_s_X_lit', 'L_M_c_M_dif', 'L_M_c_X_lit',  &
-                            'L_M_f_M_dif', 'L_M_f_X_lit'
- write (22, 1002) t, L_M_l_M_dif, L_M_l_X_lit, L_M_b_M_dif, L_M_b_X_lit,     &
-                                 L_M_s_M_dif, L_M_s_X_lit, L_M_c_M_dif, L_M_c_X_lit,     &
-                                 L_M_f_M_dif, L_M_f_X_lit
- write (23, '(11a15)') 't', 'U_C_l_G', 'U_C_b_G', 'U_C_s_G', 'U_C_c_G', 'U_C_f_G',       &
-                            'U_N_l_G', 'U_N_b_G', 'U_N_s_G', 'U_N_c_G', 'U_N_f_G'
- write (23, 1003) t, U_C_l_G, U_C_b_G, U_C_s_G, U_C_c_G, U_C_f_G,            &
-                                 U_N_l_G, U_N_b_G, U_N_s_G, U_N_c_G, U_N_f_G
- write (24, '(11a15)') 't', 'R_l_X_m', 'R_b_X_m', 'R_s_X_m', 'R_c_X_m', 'R_f_X_m',       &
-                            'R_l_X_G', 'R_b_X_G', 'R_s_X_G', 'R_c_X_G', 'R_f_X_G'
- write (24, 1004) t, R_l_X_m, R_b_X_m, R_s_X_m, R_c_X_m, R_f_X_m,            &
-                                 R_l_X_G, R_b_X_G, R_s_X_G, R_c_X_G, R_f_X_G                                
- write (25, '(9a15)') 't', 'T_C_l_b', 'T_C_b_s', 'T_C_s_c', 'T_C_c_f',                   &
-                          'T_N_b_l', 'T_N_s_b', 'T_N_c_s', 'T_N_f_c'
- write (25, 1005) t, T_C_l_b, T_C_b_s, T_C_s_c, T_C_c_f,                      &
-                                T_N_b_l, T_N_s_b, T_N_c_s, T_N_f_c
- write (26, '(22a15)')     't', 'dA_l','dM_l_M','dM_l_X','dM_l_C','dM_l_N','dM_b_M',     &
-                              'dM_b_X','dM_b_C','dM_b_N','dM_s_M','dM_s_X','dM_s_C',     &
-                              'dM_s_N','dM_c_M','dM_c_X','dM_c_C','dM_c_N','dM_f_M',     &
-                              'dM_f_X','dM_f_C','dM_f_N'         
- write (26, 1006) t, dA_l,  dM_l_M,  dM_l_X,  dM_l_C,  dM_l_N,  dM_b_M,      &
-                               dM_b_X,  dM_b_C,  dM_b_N,  dM_s_M,  dM_s_X,  dM_s_C,      &
-                               dM_s_N,  dM_c_M,  dM_c_X,  dM_c_C,  dM_c_N,  dM_f_M,      &
-                               dM_f_X,  dM_f_C,  dM_f_N   
- write (27, '(12a15)') 't', 'C_l', 'C_b', 'C_s', 'C_c', 'C_f',                           &
-                            'N_l', 'N_b', 'N_s', 'N_c', 'N_f', 'N_l_tot'  
- write (27, 1007) t, C_l, C_b, C_s, C_c, C_f,                                &
-                     N_l, N_b, N_s, N_c, N_f, N_l_tot    
- write (28, '(5a15)') 't', 'P_carb', 'U_N', 'U_N_amm', 'U_N_nit'
- write (28, 1008) t, P_carb, U_N, U_N_amm, U_N_nit   
+ write (20, '(21a15)') 'time', 'M_l_C','M_b_C','M_s_C','M_c_C','M_f_C',                  &
+                               'M_l_N','M_b_N','M_s_N','M_c_N','M_f_N',                  &
+                               'M_l_M','M_b_M','M_s_M','M_c_M','M_f_M',                  &
+                               'M_l_X','M_b_X','M_s_X','M_c_X','M_f_X'
+ write (21, '(12a15)') 'time','G_A_l','G_M_l_X','G_M_b_X','G_M_s_X','G_M_c_X','G_M_f_X', &
+                              'G_M_l_M','G_M_b_M','G_M_s_M','G_M_c_M','G_M_f_M'
+ write (22, '(11a15)') 'time','L_M_l_M_dif','L_M_l_X_lit','L_M_b_M_dif','L_M_b_X_lit',   &
+                              'L_M_s_M_dif','L_M_s_X_lit','L_M_c_M_dif','L_M_c_X_lit',   &
+                              'L_M_f_M_dif','L_M_f_X_lit'
+ write (23, '(11a15)') 'time','U_C_l_G','U_C_b_G','U_C_s_G','U_C_c_G','U_C_f_G',         &
+                              'U_N_l_G','U_N_b_G','U_N_s_G','U_N_c_G','U_N_f_G'
+ write (24, '(11a15)') 'time','R_l_X_m','R_b_X_m','R_s_X_m','R_c_X_m','R_f_X_m',         &
+                              'R_l_X_G','R_b_X_G','R_s_X_G','R_c_X_G','R_f_X_G'                            
+ write (25, '(9a15)') 'time', 'T_C_l_b', 'T_C_b_s', 'T_C_s_c', 'T_C_c_f',                &
+                              'T_N_b_l', 'T_N_s_b', 'T_N_c_s', 'T_N_f_c'
+ write (26, '(22a15)') 'time', 'dA_l',  'dM_l_M','dM_l_X','dM_l_C','dM_l_N','dM_b_M',    &
+                               'dM_b_X','dM_b_C','dM_b_N','dM_s_M','dM_s_X','dM_s_C',    &
+                               'dM_s_N','dM_c_M','dM_c_X','dM_c_C','dM_c_N','dM_f_M',    &
+                               'dM_f_X','dM_f_C','dM_f_N'           
+ write (27, '(12a15)') 'time', 'C_l', 'C_b', 'C_s', 'C_c', 'C_f',                        &
+                               'N_l', 'N_b', 'N_s', 'N_c', 'N_f', 'N_l_tot'    
+ write (28, '(5a15)') 'time', 'P_carb', 'U_N', 'U_N_amm', 'U_N_nit'
+
+ !---------------------------------------------------------------------------------------!
+ ! Write initial values
+ !---------------------------------------------------------------------------------------!
+ call output
  
  !---------------------------------------------------------------------------------------!
  ! Open and write environmental output file
@@ -319,43 +303,26 @@ program TTR_model
    !                             dM_f_N
    
    !-------------------------------------------------------------------------------------! 
-   ! Give a annual update
+   ! Write year to screen
    !-------------------------------------------------------------------------------------! 
    if (modulo (t, int (stps_per_day * days_per_year)) == 0) then
      write (*, '(a4, i3)') 'Year ', int (t * dt / days_per_year)
    end if
    
    !-------------------------------------------------------------------------------------!
-   ! Write daily diagnostics
+   ! Write diagnostics and state variables
    !-------------------------------------------------------------------------------------! 
-   daily_output : if (modulo (t, stps_per_day) == 0) then
-     write (20, 1000) t * dt, M_l_C, M_b_C, M_s_C, M_c_C, M_f_C,                    &
-                                     M_l_N, M_b_N, M_s_N, M_c_N, M_f_N,                    &
-                                     M_l_M, M_b_M, M_s_M, M_c_M, M_f_M,                    &
-                                     M_l_X, M_b_X, M_s_X, M_c_X, M_f_X
-     write (21, 1001) t * dt, G_A_l, G_M_l_X, G_M_b_X, G_M_s_X, G_M_c_X, G_M_f_X,   &
-                                     G_M_l_M, G_M_b_M, G_M_s_M, G_M_c_M, G_M_f_M 
-     write (22, 1002) t * dt , L_M_l_M_dif, L_M_l_X_lit, L_M_b_M_dif, L_M_b_X_lit,   &
-                                     L_M_s_M_dif, L_M_s_X_lit, L_M_c_M_dif, L_M_c_X_lit,   &
-                                     L_M_f_M_dif, L_M_f_X_lit
-     write (23, 1003) t * dt, U_C_l_G, U_C_b_G, U_C_s_G, U_C_c_G, U_C_f_G,          &
-                                     U_N_l_G, U_N_b_G, U_N_s_G, U_N_c_G, U_N_f_G
-     write (24, 1004) t * dt, R_l_X_m, R_b_X_m, R_s_X_m, R_c_X_m, R_f_X_m,          &
-                                     R_l_X_G, R_b_X_G, R_s_X_G, R_c_X_G, R_f_X_G   
-     write (25, 1005) t * dt, T_C_l_b, T_C_b_s, T_C_s_c, T_C_c_f,                   &
-                                     T_N_f_c, T_N_c_s, T_N_s_b, T_N_b_l
-     write (26, 1006) t * dt, dA_l,  dM_l_M,  dM_l_X,  dM_l_C,  dM_l_N,  dM_b_M,    &
-                                   dM_b_X,  dM_b_C,  dM_b_N,  dM_s_M,  dM_s_X,  dM_s_C,    &
-                                   dM_s_N,  dM_c_M,  dM_c_X,  dM_c_C,  dM_c_N,  dM_f_M,    &
-                                   dM_f_X,  dM_f_C,  dM_f_N 
-     write (27, 1007) t * dt , C_l, C_b, C_s, C_c, C_f,                              &
-                      N_l, N_b, N_s, N_c, N_f, N_l_tot 
-     write (28, 1008) t * dt, P_carb, U_N, U_N_amm, U_N_nit  
-   end if daily_output
+   write_output : if ((modulo (t, stps_per_day) == 0) .and. (REPORTING)) then
+     call output
+   else if ((modulo (t, int (stps_per_day * days_per_year)) == 0) .and.                  &
+            (.not. REPORTING)) then
+     call output
+   end if write_output
                             
  !---------------------------------------------------------------------------------------! 
  end do timestep ! End of timestep loop
- 
+
+ ! Close output files
  !---------------------------------------------------------------------------------------!
  close (20) ! Close pools.txt output file
  close (21) ! Close growth.txt output file
@@ -366,7 +333,7 @@ program TTR_model
  close (26) ! Close increments.txt output file
  close (27) ! Close concentrations.txt output file
  close (28) ! Close uptake.txt output file
-  
+ 
 contains
  !=======================================================================================!
  function f_T (T_inp)
