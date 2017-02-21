@@ -2,19 +2,20 @@
 #----------------------------------------------------------------------------------------#
 #set -e
 
-var1 = "$1"
-echo $var1
+var1="$1"
+echo ${var1}
 
 # Delete previous object file
 #----------------------------------------------------------------------------------------#
-if [ -e tmp/uptake.txt ] ; then rm tmp/*.txt ; fi
-if [ -e fig/uptake.png ] ; then rm fig/*.png ; fi
-if [ -e TTR.o     ] ; then rm TTR.o     ; fi
+if [[ -e tmp/uptake.txt ]] ; then rm tmp/*.txt ; fi
+if [[ -e fig/uptake.png ]] ; then rm fig/*.png ; fi
+if [[ -e TTR.o          ]] ; then rm TTR.o     ; fi
 
 # Compile the executable
 #----------------------------------------------------------------------------------------#
 gfortran -c TTR_parameters.f90
 gfortran -c TTR_variables.f90
+gfortran -c TTR_output.f90
 gfortran -c TTR_C_uptake.f90
 gfortran -c TTR_N_uptake.f90
 gfortran -c TTR_growth.f90
@@ -25,7 +26,9 @@ gfortran -c TTR_respiration.f90
 gfortran -c TTR_transport.f90
 gfortran -c TTR_increments.f90
 gfortran -c TTR_model.f90
-gfortran -o TTR_model TTR_parameters.o TTR_variables.o TTR_C_uptake.o TTR_N_uptake.o TTR_growth.o TTR_loss.o TTR_respiration.o TTR_transport.o TTR_utilisation.o TTR_increments.o TTR_model.o
+gfortran -o TTR_model TTR_parameters.o TTR_variables.o TTR_output.o TTR_C_uptake.o       \
+            TTR_N_uptake.o TTR_growth.o TTR_loss.o TTR_respiration.o TTR_transport.o     \
+            TTR_utilisation.o TTR_increments.o TTR_model.o
 
 # Run the executable
 #----------------------------------------------------------------------------------------#
@@ -41,8 +44,7 @@ rm *.o
 
 # Open R script to plot outputs if outputs are desired
 #----------------------------------------------------------------------------------------#
-if [ $var1 == 'output']
-then
+if [[ $var1 == "output" ]] ; then
   R CMD BATCH plot_pools.R
   R CMD BATCH plot_uptake.R                          
   R CMD BATCH plot_growth.R

@@ -25,18 +25,26 @@ names (c.c) <- c ('Leaves',  'Branches','Stems',   'Coarse roots',  'Fine roots 
 
 # Read in the concentrations data
 #----------------------------------------------------------------------------------------#
+pools          <- read.table (file = 'tmp/pools.txt',          header = T)
+growth         <- read.table (file = 'tmp/growth.txt',         header = T)
+loss           <- read.table (file = 'tmp/loss.txt',           header = T)
+util           <- read.table (file = 'tmp/utilisation.txt',    header = T)
+resp           <- read.table (file = 'tmp/respiration.txt',    header = T)
+transp         <- read.table (file = 'tmp/transport.txt',    header = T)
+incs           <- read.table (file = 'tmp/increments.txt',     header = T)
 concentrations <- read.table (file = 'tmp/concentrations.txt', header = T)
+uptake         <- read.table (file = 'tmp/uptake.txt',     header = T)
 
 # Determine time axis
 #----------------------------------------------------------------------------------------#
-#years        = as.numeric (read.table ('driver.txt', skip = 5, nrows = 1) [1])
+years        = as.numeric (read.table ('driver.txt', skip = 5, nrows = 1) [1])
 stps_per_day = as.numeric (read.table ('driver.txt', skip = 6, nrows = 1) [1])
 #n_stems      = as.numeric (read.table ('driver.txt', skip = 6, nrows = 1) [1])
 dt     = 1 / stps_per_day
-tstps  = length (concentrations [,1])
+tstps  = years * 365.25 * stps_per_day
 days   = dt * tstps
 hours  = dt * tstps * 24.0
-years  = dt * tstps * 24.0 * 365.25
+
 if (days > 365) {
   xlab_time = 'Time [years]'
   xmax      = ceiling (years)

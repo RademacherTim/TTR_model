@@ -6,5 +6,15 @@
    100              ! Number of years in the simulation
     50              ! Number of steps per day. Thornley (1991) set this to 50
    0.1              ! Number of stems in the simulation
- FALSE              ! Boolean to decide whether to use Liebig's law of the minimum or Mitscherlich's law of constant activity
+ FALSE              ! Boolean for Liebig's law of the minimum (TRUE) or Mitscherlich's law of constant activity (FALSE)
+ FALSE              ! Boolean for reporting interval (true == daily, false == annual)
+ TRUE               ! Boolean for reporting pools          (R_POOLS)
+ TRUE               ! Boolean for reporting growth         (R_GROWTH)
+ TRUE               ! Boolean for reporting loss           (R_LOSS)
+ TRUE               ! Boolean for reporting utilisation    (R_UTILISATION)
+ TRUE               ! Boolean for reporting respiration    (R_RESPIRATION)
+ TRUE               ! Boolean for reporting transport      (R_TRANSPORT)
+ TRUE               ! Boolean for reporting increments     (R_INCREMENTS)
+ TRUE               ! Boolean for reporting concentrations (R_CONCENTRATIONS)
+ TRUE               ! Boolean for reporting uptake         (R_UPTAKE)
 !========================================================================================!

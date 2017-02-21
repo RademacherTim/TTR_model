@@ -9,10 +9,8 @@
 #----------------------------------------------------------------------------------------#
 source ('setup.R')
 
-# Read in the pool data
+# Plot pool data
 #----------------------------------------------------------------------------------------#
-uptake <- read.table (file = 'tmp/uptake.txt', header = T)
-
 png (file = 'fig/uptake.png')
 
   par (mar = c (5, 5, 1, 5))
