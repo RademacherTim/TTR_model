@@ -30,38 +30,48 @@ growth         <- read.table (file = 'tmp/growth.txt',         header = T)
 loss           <- read.table (file = 'tmp/loss.txt',           header = T)
 util           <- read.table (file = 'tmp/utilisation.txt',    header = T)
 resp           <- read.table (file = 'tmp/respiration.txt',    header = T)
-transp         <- read.table (file = 'tmp/transport.txt',    header = T)
+transp         <- read.table (file = 'tmp/transport.txt',      header = T)
 incs           <- read.table (file = 'tmp/increments.txt',     header = T)
 concentrations <- read.table (file = 'tmp/concentrations.txt', header = T)
-uptake         <- read.table (file = 'tmp/uptake.txt',     header = T)
+uptake         <- read.table (file = 'tmp/uptake.txt',         header = T)
 
 # Determine time axis
 #----------------------------------------------------------------------------------------#
-years        = as.numeric (read.table ('driver.txt', skip = 5, nrows = 1) [1])
+#years        = as.numeric (read.table ('driver.txt', skip = 5, nrows = 1) [1])
 stps_per_day = as.numeric (read.table ('driver.txt', skip = 6, nrows = 1) [1])
 #n_stems      = as.numeric (read.table ('driver.txt', skip = 6, nrows = 1) [1])
+
+lastline <-  function (filename) {
+  ## filename is of mode character
+  out <- system (sprintf ("wc -l %s", filename), intern = TRUE)
+  n <- as.integer (sub (sprintf ("[ ] * ([0-9]+)[ ]%s", filename),"\\1", out))
+  #print (n)
+  return (as.numeric (read.table ('tmp/concentrations.txt', skip = n - 1, nrows = 1) [1]))
+}
+
+tstps = lastline ('tmp/concentrations.txt')
 dt     = 1 / stps_per_day
-tstps  = years * 365.25 * stps_per_day
+years  = dt * tstps / 365.25
 days   = dt * tstps
 hours  = dt * tstps * 24.0
 
 if (days > 365) {
   xlab_time = 'Time [years]'
   xmax      = ceiling (years)
-  labels    = seq (1, xmax, by = 1)
-  ats       = seq (1, xmax, by = 1) * 365.25 / dt
+  labels    = seq (0, xmax, by = 1)
+  ats       = seq (0, xmax, by = 1) * 365.25 / dt
   xmax      = xmax * 365.25 / dt
 } else if (days > 1) {
   xlab_time = 'Time [days]'
   xmax      = ceiling (days) 
-  labels    = seq (1, xmax, by = 1)
-  ats       = seq (1, xmax, by = 1) / dt
+  labels    = seq (0, xmax, by = 1)
+  ats       = seq (0, xmax, by = 1) / dt
   xmax      = xmax / dt
 } else {
   xlab_time = 'Time [hours]'
   xmax      = ceiling (hours)
-  labels    = seq (1, xmax, by = 1)
-  ats       = seq (1, xmax, by = 1) / (24.0 * dt)
+  labels    = seq (0, xmax, by = 1)
+  ats       = seq (0, xmax, by = 1) / (24.0 * dt)
   xmax      = xmax / (24.0 * dt)
 }
 

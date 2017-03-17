@@ -102,6 +102,8 @@ if [[ $var1 == "output" ]] ; then
   # Move back to TTR_model directory
   #--------------------------------------------------------------------------------------#
   cd ..
+elif [[ $var1 == "thornley" ]] ; then
+  R CMD BATCH plot_thornley.R
 fi
 
 echo 'Done!'
