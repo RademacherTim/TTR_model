@@ -11,42 +11,42 @@ module TTR_variables
  !---------------------------------------------------------------------------------------!
  ! Foliage (subscript, l)
  !---------------------------------------------------------------------------------------!
- real (dp) :: M_l_C ! Foliage C substrate          ([kg C] [stem]-1)
+ real (dp) :: M_l_C ! Foliage C substrate          ([kg C]  [stem]-1)
  real (dp) :: M_l_M ! Foliage meristem             ([kg dm] [stem])
- real (dp) :: M_l_N ! Foliage N substrate          ([kg N] [stem]-1) 
+ real (dp) :: M_l_N ! Foliage N substrate          ([kg N]  [stem]-1) 
  real (dp) :: M_l_X ! Foliage structure            ([kg dm] [stem]-1)
- real (dp) :: L     ! Foliage area of plot         ([m]2)
- real (dp) :: A_l   ! Foliage surface area         ([m]2 [stem]-1)
+ real (dp) :: LAI   ! Plot leaf area index (LAI)   ([m]2 leaf [m]2 ground)
+ real (dp) :: A_l   ! Foliage surface area         ([m]2    [stem]-1)
  !---------------------------------------------------------------------------------------!
  ! Branches (subscript, b)
  !---------------------------------------------------------------------------------------!
- real (dp) :: M_b_C ! Branch C substrate           ([kg C] [stem]-1)
+ real (dp) :: M_b_C ! Branch C substrate           ([kg C]  [stem]-1)
  real (dp) :: M_b_M ! Branch meristem              ([kg dm] [stem])
- real (dp) :: M_b_N ! Branch N substrate           ([kg N] [stem]-1)
+ real (dp) :: M_b_N ! Branch N substrate           ([kg N]  [stem]-1)
  real (dp) :: M_b_X ! Branch structure             ([kg dm] [stem]-1)
  real (dp) :: A_b   ! Surface area of branches     ([m]2)
  !---------------------------------------------------------------------------------------!
  ! Stems (subscript, s)
  !---------------------------------------------------------------------------------------!
- real (dp) :: M_s_C ! Stem C substrate             ([kg C] [stem]-1)
+ real (dp) :: M_s_C ! Stem C substrate             ([kg C]  [stem]-1)
  real (dp) :: M_s_M ! Stem meristem                ([kg dm] [stem])
- real (dp) :: M_s_N ! Stem N substrate             ([kg N] [stem]-1)
+ real (dp) :: M_s_N ! Stem N substrate             ([kg N]  [stem]-1)
  real (dp) :: M_s_X ! Stem structure               ([kg dm] [stem]-1)
- real (dp) :: A_s   ! Surface area of the stem     ([m]2 [stem]-1)
+ real (dp) :: A_s   ! Surface area of the stem     ([m]2    [stem]-1)
  !---------------------------------------------------------------------------------------!
  ! Coarse roots (subscript, c)
  !---------------------------------------------------------------------------------------!
- real (dp) :: M_c_C ! Coarse roots C substrate     ([kg C] [stem]-1)
+ real (dp) :: M_c_C ! Coarse roots C substrate     ([kg C]  [stem]-1)
  real (dp) :: M_c_M ! Coarse roots meristem        ([kg dm] [stem])
- real (dp) :: M_c_N ! Coarse roots N substrate     ([kg N] [stem]-1)
+ real (dp) :: M_c_N ! Coarse roots N substrate     ([kg N]  [stem]-1)
  real (dp) :: M_c_X ! Coarse roots structure       ([kg dm] [stem]-1)
- real (dp) :: A_c   ! Surface area of coarse roots ([m]2 [stem]-1)
+ real (dp) :: A_c   ! Surface area of coarse roots ([m]2    [stem]-1)
  !---------------------------------------------------------------------------------------!
  ! Fine roots and mycorrhiza (subscript, f)
  !---------------------------------------------------------------------------------------!
- real (dp) :: M_f_C ! Fine roots C substrate       ([kg C] [stem]-1)
+ real (dp) :: M_f_C ! Fine roots C substrate       ([kg C]  [stem]-1)
  real (dp) :: M_f_M ! Fine roots meristem          ([kg dm] [stem])
- real (dp) :: M_f_N ! Fine roots N substrate       ([kg N] [stem]-1)
+ real (dp) :: M_f_N ! Fine roots N substrate       ([kg N]  [stem]-1)
  real (dp) :: M_f_X ! Fine roots structure         ([kg dm] [stem]-1)
  !---------------------------------------------------------------------------------------!
  
@@ -55,7 +55,7 @@ module TTR_variables
  !---------------------------------------------------------------------------------------!
  real (dp) :: C_CO2     ! CO2 concentration               ([ppmv])
  real (dp) :: C_CO2_air ! ? CO2 concentration      (?)
- real (dp) :: J         ! Daily radiation recept          ([J] [m]-2 [d]-1)
+ real (dp) :: J         ! Daily radiation receipt         ([J] [m]-2 [d]-1)
  real (dp) :: N_amm     ! Soil mineral ammonium level     ([kg N] [m]-2)
  real (dp) :: N_nit     ! Soil mineral nitrate level      ([kg N] [m]-2)
  real (dp) :: N_eff     ! Effective soil N concentration  ([kg N] [m]-2)
@@ -70,27 +70,27 @@ module TTR_variables
  !---------------------------------------------------------------------------------------!
  ! Declare spatio-temporal variables
  !---------------------------------------------------------------------------------------!
- integer :: t                      ! t                                         ([d])
- integer :: days                   ! Number of days in simulation
- integer :: tstps                  ! Number of timesteps in simulation         ([d])
- real (dp) :: n_stems              ! Number of stems     in simulation         (unitless)
- real (dp) :: dt                   ! Fraction of day of timestep  
- integer :: years                  ! Number of years in simulation             ([yr])
- integer :: stps_per_day           ! Number of timesteps per day in simulation ([d]-1)
+ integer :: t                      ! timestep counter                  (unitless)
+ integer :: days                   ! Number of days in simulation      ([d])
+ integer :: tstps                  ! Number of timesteps in simulation ([sp])
+ real (dp) :: n_stems              ! Number of stems     in simulation ([stems] [m2] ground)
+ real (dp) :: dt                   ! Fraction of day of timestep       ([d])
+ integer :: years                  ! Number of years in simulation     ([yr])
+ integer :: stps_per_day           ! Number of timesteps per day in simulation ([sp] [d]-1)
  !---------------------------------------------------------------------------------------!        
  !---------------------------------------------------------------------------------------!
 
  !---------------------------------------------------------------------------------------!
  ! Declare variables
  !---------------------------------------------------------------------------------------!
- real (dp) :: I          ! Incident radiative flux                 ([J] [m-]2)
- real (dp) :: I_leaf     ! Incident radiative flux on leaf         ([J] [m]-2)
+ real (dp) :: I          ! Incident radiative flux                   ([J] [m-]2)
+ real (dp) :: I_leaf     ! Incident radiative flux on leaf           ([J] [m]-2)
  real (dp) :: P_max20    ! Maximal rate of photosynthesis at 20 degC ([kg CO2] [m]2 leaf [s]-1)
- real (dp) :: P_max      ! Light-saturate rate of photosynthesis   ([kg CO2] [m]2 leaf [s]-1)
- real (dp) :: alpha      ! Leaf photosynthetic efficiency          ([kg CO2] [J]-1)
- real (dp) :: P_l        ! Leaf-level gross photosynthetic rate         ([kg CO2] [m]-2 leaf [s]-1)
- real (dp) :: P_c        ! Canopy-level gross photosynthetic reate      ([kg CO2] [m]-2 ground [s]-1)
- real (dp) :: P_carb     ! Canopy gross photosynthetic rate             ([kg CO2] [stem]-1 [d]-1)
+ real (dp) :: P_max      ! Light-saturate rate of photosynthesis     ([kg CO2] [m]2 leaf [s]-1)
+ real (dp) :: alpha      ! Leaf photosynthetic efficiency            ([kg CO2] [J]-1)
+ real (dp) :: P_l        ! Leaf-level gross photosynthetic rate      ([kg CO2] [m]-2 leaf [s]-1)
+ real (dp) :: P_c        ! Canopy-level gross photosynthetic reate   ([kg CO2] [m]-2 ground [s]-1)
+ real (dp) :: P_carb     ! Canopy gross photosynthetic rate          ([kg CO2] [stem]-1 [d]-1)
  !---------------------------------------------------------------------------------------!
 
  !---------------------------------------------------------------------------------------!
@@ -139,8 +139,8 @@ module TTR_variables
  real (dp) :: G_M_f_M    ! Branch meristem
  real (dp) :: G_M_f_X    ! Branch structure
  !---------------------------------------------------------------------------------------!
- real (dp) :: c_a_l_a    ! Incremental specific leaf area               ([m]2 leaf [kg Xdm]-1) 
- real (dp) :: G_A_l      ! Leaf area growth rate                        ([m]2 [d]-1) 
+ real (dp) :: c_SLA      ! Specific leaf area factor for leaf area growth ([m]2 leaf [kg Xdm]-1) 
+ real (dp) :: G_A_l      ! Leaf area growth rate                          ([m]2 [d]-1) 
  !---------------------------------------------------------------------------------------!
  ! Combined temperature and intrinsic leaf differentiation factor ([d]-1)
  !---------------------------------------------------------------------------------------!
@@ -150,7 +150,7 @@ module TTR_variables
  real (dp) :: k_dif_c    ! Coarse roots
  real (dp) :: k_dif_f    ! Fine roots and mycorrhiza
  !---------------------------------------------------------------------------------------!
- ! Combined temperature and structural litter factor ([d]-1)
+ ! Combined temperature and structural litter factor      ([d]-1)
  !---------------------------------------------------------------------------------------!
  real (dp) :: k_l_X_lit  ! Leaves
  real (dp) :: k_b_X_lit  ! Branches
@@ -160,7 +160,7 @@ module TTR_variables
  !---------------------------------------------------------------------------------------!
  real (dp) :: k_A_l_lit   ! Combined temperature and foliage area litter factore ([d]-1)
  !---------------------------------------------------------------------------------------!
- ! Losses to differentiation of meristem             ([kg Xdm] [stem]-1 [d]-1)
+ ! Losses to differentiation of meristem                  ([kg Xdm] [stem]-1 [d]-1)
  !---------------------------------------------------------------------------------------!
  real (dp) :: L_M_l_M_dif ! Leaves
  real (dp) :: L_M_b_M_dif ! Branches
@@ -168,7 +168,7 @@ module TTR_variables
  real (dp) :: L_M_c_M_dif ! Coarse roots
  real (dp) :: L_M_f_M_dif ! Fine roots and mycorrhiza
  !---------------------------------------------------------------------------------------!
- ! Losses to leaf structural litter                  ([kg Xdm] [stem]-1 [d]-1)
+ ! Losses to leaf structural litter                       ([kg Xdm] [stem]-1 [d]-1)
  !---------------------------------------------------------------------------------------!
  real (dp) :: L_M_l_X_lit ! Leaves
  real (dp) :: L_M_b_X_lit ! Branches
@@ -176,30 +176,30 @@ module TTR_variables
  real (dp) :: L_M_c_X_lit ! Coarse roots
  real (dp) :: L_M_f_X_lit ! Fine roots and mycorrhiza
  !---------------------------------------------------------------------------------------!
- real (dp) :: L_A_l     ! Losses to leaf litter                        ([kg Xdm] [stem]-1 [d]-1)
+ real (dp) :: L_A_l       ! Losses to leaf litter         ([kg Xdm] [stem]-1 [d]-1)
  !---------------------------------------------------------------------------------------!
- ! Maintenance respiration                           ([kg C] [stem]-1 [d]-1)
+ ! Maintenance respiration                                ([kg C] [stem]-1 [d]-1)
  !---------------------------------------------------------------------------------------!
- real (dp) :: R_l_X_m   ! In leaves
- real (dp) :: R_b_X_m   ! In branches
- real (dp) :: R_s_X_m   ! In stems
- real (dp) :: R_c_X_m   ! In coarse roots
- real (dp) :: R_f_X_m   ! In fine roots and mycorrhiza
+ real (dp) :: R_l_X_m     ! In leaves
+ real (dp) :: R_b_X_m     ! In branches
+ real (dp) :: R_s_X_m     ! In stems
+ real (dp) :: R_c_X_m     ! In coarse roots
+ real (dp) :: R_f_X_m     ! In fine roots and mycorrhiza
  !---------------------------------------------------------------------------------------!
- ! Growth respiration                                 ([kg C] [stem]-1 [d]-1)
+ ! Growth respiration                                     ([kg C] [stem]-1 [d]-1)
  !---------------------------------------------------------------------------------------!
- real (dp) :: R_l_X_G   ! In leaves
- real (dp) :: R_b_X_G   ! In branches
- real (dp) :: R_s_X_G   ! In stems
- real (dp) :: R_c_X_G   ! In coarse roots
- real (dp) :: R_f_X_G   ! In fine roots and mycorrhiza
+ real (dp) :: R_l_X_G     ! In leaves
+ real (dp) :: R_b_X_G     ! In branches
+ real (dp) :: R_s_X_G     ! In stems
+ real (dp) :: R_c_X_G     ! In coarse roots
+ real (dp) :: R_f_X_G     ! In fine roots and mycorrhiza
  !---------------------------------------------------------------------------------------!
- ! Maintenance coefficient                           ([d]-1)
+ ! Maintenance coefficient                                ([d]-1)
  !---------------------------------------------------------------------------------------!
  real (dp) :: m_M_l_X   ! For leaves
  real (dp) :: m_M_f_X   ! For fine roots and mycorrhiza
  !---------------------------------------------------------------------------------------!
- ! Utilisation of C for growth                        ([kg C] [d]-1)
+ ! Utilisation of C for growth                            ([kg C] [d]-1)
  !---------------------------------------------------------------------------------------!
  real (dp) :: U_C_l_G  ! In leaves
  real (dp) :: U_C_b_G  ! In branches
@@ -207,7 +207,7 @@ module TTR_variables
  real (dp) :: U_C_c_G  ! In coarse roots
  real (dp) :: U_C_f_G  ! In fine roots and mycorrhiza 
  !---------------------------------------------------------------------------------------!
- ! Utilisation of N for growth                        ([kg N] [d]-1)
+ ! Utilisation of N for growth                            ([kg N] [d]-1)
  !---------------------------------------------------------------------------------------!
  real (dp) :: U_N_l_G  ! In leaves
  real (dp) :: U_N_b_G  ! In branches
@@ -215,14 +215,14 @@ module TTR_variables
  real (dp) :: U_N_c_G  ! In coarse roots
  real (dp) :: U_N_f_G  ! In fine roots and mycorrhiza
  !---------------------------------------------------------------------------------------!
- ! C transport coefficient                    ([d]-1)
+ ! C transport coefficient                                ([d]-1)
  !---------------------------------------------------------------------------------------!
  real (dp) :: c_tau_C_l_b ! Leaves       -> branches
  real (dp) :: c_tau_C_b_s ! Branches     -> stems
  real (dp) :: c_tau_C_s_c ! Stems        -> coarse roots
  real (dp) :: c_tau_C_c_f ! Coarse roots -> fine roots and mycorrhiza
  !---------------------------------------------------------------------------------------!
- ! N transport coefficient                    ([d]-1)
+ ! N transport coefficient                               ([d]-1)
  !---------------------------------------------------------------------------------------!
  real (dp) :: c_tau_N_b_l ! Branches     -> Leaves
  real (dp) :: c_tau_N_s_b ! Stems        -> Branches
@@ -288,7 +288,6 @@ module TTR_variables
  !---------------------------------------------------------------------------------------!
  ! Timestep increments for fine roots and mycorrhiza
  !---------------------------------------------------------------------------------------!
- real (dp) :: dA_f      ! Change in leaf surface area
  real (dp) :: dM_f_M    ! Change in mass of meristem
  real (dp) :: dM_f_X    ! Change in mass of structural drymass
  real (dp) :: dM_f_C    ! Change in mass of C

@@ -3,13 +3,18 @@
 #set -e
 
 var1="$1"
-echo ${var1}
+#echo ${var1}
 
 # Delete previous object file
 #----------------------------------------------------------------------------------------#
 if [[ -e tmp/uptake.txt ]] ; then rm tmp/*.txt ; fi
 if [[ -e fig/uptake.png ]] ; then rm fig/*.png ; fi
 if [[ -e TTR.o          ]] ; then rm TTR.o     ; fi
+
+# Make temporary and figure directory, if they do not exist
+#----------------------------------------------------------------------------------------#
+if [[ ! -d tmp/ ]] ; then mkdir tmp/ ; fi
+if [[ ! -d fig/ ]] ; then mkdir fig/ ; fi
 
 # Compile the executable
 #----------------------------------------------------------------------------------------#
@@ -102,6 +107,17 @@ if [[ $var1 == "output" ]] ; then
   # Move back to TTR_model directory
   #--------------------------------------------------------------------------------------#
   cd ..
+elif [[ $var1 == "thornley" ]] ; then
+  R CMD BATCH plot_thornley_fig3.R
+  R CMD BATCH plot_thornley_fig4.R
+  R CMD BATCH plot_thornley_fig5.R
+  R CMD BATCH plot_thornley_fig6.R
 fi
+
+
+# Delete temporary directory
+#----------------------------------------------------------------------------------------#
+#rm -r tmp/
+#rm -r fig/
 
 echo 'Done!'

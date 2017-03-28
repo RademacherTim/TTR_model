@@ -36,6 +36,13 @@ png (file = 'fig/uptake.png')
         col  = '#8F2BBC')
   mtext ('N uptake [kg N per day]', side = 4, line = 3)
   axis (4)
+  legend (x       = 0, 
+          y       = max (uptake [, 3]), 
+          legend  = c ('C','N'), 
+          box.lty = 0, 
+          lty     = c (1, 2), 
+          col     = c ('#91b9a4','#8F2BBC'), 
+          lwd     = 2)
 dev.off ()
 
 #========================================================================================#

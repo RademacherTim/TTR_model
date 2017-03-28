@@ -173,15 +173,16 @@ program TTR_model
                               'U_N_l_G','U_N_b_G','U_N_s_G','U_N_c_G','U_N_f_G'
  write (24, '(11a15)') 'time','R_l_X_m','R_b_X_m','R_s_X_m','R_c_X_m','R_f_X_m',         &
                               'R_l_X_G','R_b_X_G','R_s_X_G','R_c_X_G','R_f_X_G'                            
- write (25, '(9a15)') 'time', 'T_C_l_b', 'T_C_b_s', 'T_C_s_c', 'T_C_c_f',                &
-                              'T_N_b_l', 'T_N_s_b', 'T_N_c_s', 'T_N_f_c'
- write (26, '(22a15)') 'time', 'dA_l',  'dM_l_M','dM_l_X','dM_l_C','dM_l_N','dM_b_M',    &
-                               'dM_b_X','dM_b_C','dM_b_N','dM_s_M','dM_s_X','dM_s_C',    &
-                               'dM_s_N','dM_c_M','dM_c_X','dM_c_C','dM_c_N','dM_f_M',    &
-                               'dM_f_X','dM_f_C','dM_f_N'           
- write (27, '(12a15)') 'time', 'C_l', 'C_b', 'C_s', 'C_c', 'C_f',                        &
-                               'N_l', 'N_b', 'N_s', 'N_c', 'N_f', 'N_l_tot'    
- write (28, '(5a15)') 'time', 'P_carb', 'U_N', 'U_N_amm', 'U_N_nit'
+ write (25, '(13a15)') 'time','T_C_l_b','T_C_b_s','T_C_s_c','T_C_c_f',                   &
+                              'T_N_b_l','T_N_s_b','T_N_c_s','T_N_f_c',                   &
+                              'g_C_b_l','g_C_s_b','g_C_c_s','g_C_f_c'
+ write (26, '(22a15)') 'time','dA_l',  'dM_l_M','dM_l_X','dM_l_C','dM_l_N','dM_b_M',    &
+                              'dM_b_X','dM_b_C','dM_b_N','dM_s_M','dM_s_X','dM_s_C',    &
+                              'dM_s_N','dM_c_M','dM_c_X','dM_c_C','dM_c_N','dM_f_M',    &
+                              'dM_f_X','dM_f_C','dM_f_N'           
+ write (27, '(12a15)') 'time','C_l', 'C_b', 'C_s', 'C_c', 'C_f',                        &
+                              'N_l', 'N_b', 'N_s', 'N_c', 'N_f', 'N_l_tot'    
+ write (28, '(9a15)') 'time','P_carb','U_N','U_N_amm','U_N_nit','P_c','P_l','P_max','L' 
 
  !---------------------------------------------------------------------------------------!
  ! Write initial values
@@ -210,103 +211,62 @@ program TTR_model
    f_T_soil  = f_T (T_soil)
    
    !-------------------------------------------------------------------------------------!
-   ! Call C uptake subroutine to determine the uptake of carbon
+   ! C uptake in leaves due to photosynthesis per timestep   ([kg C]    [stem]-1 [tsp-1])
    !-------------------------------------------------------------------------------------!
    call C_uptake 
-   !-------------------------------------------------------------------------------------!
-   !write (*, '(a15, 11a12)') '  ','L','I','P_max20','P_max','alpha',        &
-   !                          'I_leaf','P_g1','P_g2','P_g','P_CO2','P_carb' 
-   !write (*, '(a15, 11f12.5)') 'Photosynthesis ', L, I, P_max20, P_max, alpha, I_leaf,   &
-   !                                               P_g1, P_g2, P_g, P_CO2, P_carb
+
 
    !-------------------------------------------------------------------------------------!
-   ! N uptake by the fine roots and mycorrhiza
+   ! N uptake by the fine roots and mycorrhiza per timestep  ([kg N]    [stem]-1 [tsp]-1)
    !-------------------------------------------------------------------------------------!
    call N_uptake
-   !-------------------------------------------------------------------------------------!
-   !write (*, '(a15, 3a12)')   '                ','U_N','U_N_nit','U_N_amm'
-   !write (*, '(a15, 3f12.5)') 'Nitrogen uptake ', U_N , U_N_nit,  U_N_amm
+
              
    !-------------------------------------------------------------------------------------!
-   ! Growth (G) of meristematic and structure dry matter for leaves
+   ! Growth (G) of meristematic and structural dry matter per timestep for:
+   !  - structural compartments                              ([kg X dm] [stem]-1 [tsp]-1)
+   !  - leaf area                                            ([m]2      [stem]-1 [tsp]-1)
    !-------------------------------------------------------------------------------------!
    call growth 
-   !-------------------------------------------------------------------------------------!
-   !write (*, '(a15, 11a12)')   ' ','G_A_l', 'G_M_l_M','G_M_l_X','G_M_b_M','G_M_b_X',    &
-   !                            'G_M_s_M','G_M_s_X','G_M_c_M','G_M_c_X','G_M_f_M','G_M_f_X'
-   !write (*, '(a15, 11f12.5)') 'Growth  ', G_A_l, G_M_l_M, G_M_l_X, G_M_b_M, G_M_b_X,      &
-   !                             G_M_s_M, G_M_s_X, G_M_c_M, G_M_c_X, G_M_f_M, G_M_f_X
+
                                                      
    !-------------------------------------------------------------------------------------!
-   ! Losses (L) to differentiation and to litter for leaves
+   ! Losses (L) to differentiation and to litter per timestep for:
+   !  - structural compartments                              ([kg X dm] [stem]-1 [tsp-1])
+   !  - leaf area                                            ([m2]      [stem]-1 [tsp-1])
    !-------------------------------------------------------------------------------------!
    call loss
-   !-------------------------------------------------------------------------------------!
-   !write (*, '(a15, 10a12)') ' ', 'L_M_l_M_dif', 'L_M_l_X_lit', 'L_M_b_M_dif',& 
-   !                               'L_M_b_X_lit', 'L_M_s_M_dif', 'L_M_s_X_lit',&
-   !                               'L_M_c_M_dif', 'L_M_c_X_lit', 'L_M_f_M_dif',&
-   !                               'L_M_f_X_lit'
-   !write (*, '(a15, 10f12.5)') 'Losses to litter',L_M_l_M_dif, L_M_l_X_lit, L_M_b_M_dif,& 
-   !                                               L_M_b_X_lit, L_M_s_M_dif, L_M_s_X_lit,&
-   !                                               L_M_c_M_dif, L_M_c_X_lit, L_M_f_M_dif,&
-   !                                               L_M_f_X_lit
+
                                                 
    !-------------------------------------------------------------------------------------! 
-   ! Utilisation (U) of C and N substrate
+   ! Utilisation (U) of C and N substrate                    ([kg sub]  [stem]-1 [tsp]-1)
    !-------------------------------------------------------------------------------------!
    call utilisation
-   !-------------------------------------------------------------------------------------!
-   !write (*, '(a15, 5a12)') ' ', 'U_C_l_G', 'U_C_b_G', 'U_C_s_G', 'U_C_c_G', 'U_C_f_G'
-   !write (*, '(a15, 5f12.5)') 'C utilisation', U_C_l_G, U_C_b_G, U_C_s_G, U_C_c_G, U_C_f_G
-   !write (*, *)
-   !-------------------------------------------------------------------------------------!
-   !write (*, '(a15, 5a12)') ' ', 'U_N_l_G', 'U_N_b_G', 'U_N_s_G', 'U_N_c_G', 'U_N_f_G'
-   !write (*, '(a15, 5f12.5)') 'N utilisation', U_N_l_G, U_N_b_G, U_N_s_G, U_N_c_G, U_N_f_G
+
                                                   
    !-------------------------------------------------------------------------------------!
-   ! Respiration
+   ! Respiration                                             ([kg C]    [stem]-1 [tsp]-1)
    !-------------------------------------------------------------------------------------!
    call respiration
-   !-------------------------------------------------------------------------------------!
-   !write (*, '(3f12.8)') C_b, M_b_C, M_b_M
-   !write (*, '(a15, 5a12)') ' ', 'R_l_X_m', 'R_b_X_m', 'R_s_X_m', 'R_c_X_m', 'R_f_X_m'
-   !write (*, '(a15, 5f12.5)') 'Respiration ', R_l_X_m, R_b_X_m, R_s_X_m, R_c_X_m, R_f_X_m
-   !write (*, *)
-   !-------------------------------------------------------------------------------------!
-   !write (*, '(a15, 5a12)') ' ', 'R_l_X_G', 'R_b_X_G', 'R_s_X_G', 'R_c_X_G', 'R_f_X_G'
-   !write (*, '(a15, 5f12.5)') 'Respiration ', R_l_X_G, R_b_X_G, R_s_X_G, R_c_X_G, R_f_X_G
+
                                                           
    !-------------------------------------------------------------------------------------!
-   ! Transport fluxes (T) of C and N
+   ! Transport fluxes (T) of C and N                         ([kg sub]  [stem]-1 [tsp]-1)
    !-------------------------------------------------------------------------------------!
    call transport
-   !-------------------------------------------------------------------------------------!
-   !write (*, '(a15, 4a12)')   '            ','T_C_l_b','T_C_b_s','T_C_s_c','T_C_c_f'
-   !write (*, '(a15, 4f12.5)') 'C transport ', T_C_l_b,  T_C_b_s,  T_C_s_c,  T_C_c_f
-   !write (*, *)
-   !-------------------------------------------------------------------------------------!
-   !write (*, '(a15, 4a12)')   '            ','T_N_b_l','T_N_s_b','T_N_c_s','T_N_f_c'
-   !write (*, '(a15, 4f12.5)') 'N transport ', T_N_b_l,  T_N_s_b,  T_N_c_s,  T_N_f_c
+
  
    !-------------------------------------------------------------------------------------!
-   ! Calculate increments and update pools
+   ! Calculate increments and update pools                    ([kg]     [stem]-1 [tsp]-1)
    !-------------------------------------------------------------------------------------!
    call increments
-   !-------------------------------------------------------------------------------------!
-   !write (*, '(a15, 21a12 )') ' ', 'dA_l', 'dM_l_M', 'dM_l_X', 'dM_l_C', 'dM_l_N',      &
-   !                           'dM_b_M', 'dM_b_X', 'dM_b_C', 'dM_b_N', 'dM_s_M', 'dM_s_X',&
-   !                           'dM_s_C', 'dM_s_N', 'dM_c_M', 'dM_c_X', 'dM_c_C', 'dM_c_N',&
-   !                           'dM_f_M', 'dM_f_X', 'dM_f_C', 'dM_f_N'
-   !write (*, '(a15, 21f12.5)') 'Change ', dA_l, dM_l_M, dM_l_X, dM_l_C, dM_l_N, dM_b_M,  &
-   !                             dM_b_X, dM_b_C, dM_b_N, dM_s_M, dM_s_X, dM_s_C, dM_s_N,  &
-   !                             dM_c_M, dM_c_X, dM_c_C, dM_c_N, dM_f_M, dM_f_X, dM_f_C,  &
-   !                             dM_f_N
+
    
    !-------------------------------------------------------------------------------------! 
    ! Write year to screen
    !-------------------------------------------------------------------------------------! 
    if (modulo (t, int (stps_per_day * days_per_year)) == 0) then
-     write (*, '(a4, i3)') 'Year ', int (t * dt / days_per_year)
+     write (*, '(a4, i3)') 'Year ', int (t * dt / days_per_year) + 1
    end if
    
    !-------------------------------------------------------------------------------------!
@@ -345,7 +305,7 @@ contains
   real (dp), parameter :: T_ref = 20.0d0 ! Reference temperature at which f_T = 1 ([degC])
   real (dp), parameter :: T_max = 30.0d0 ! Temperature at which rate processes are maximum ([degC])
  
-  f_T   = ((T_inp - T_0) * (2 * T_max - T_0 - T_inp)) /                                   &
+  f_T   = ((T_inp - T_0) * (2 * T_max - T_0 - T_inp)) /                                  &
           ((T_ref - T_0) * (2 * T_max - T_0 - T_ref)) 
   !--------------------------------------------------------------------------------------!
   return

@@ -5,7 +5,7 @@
 
    100              ! Number of years in the simulation
     50              ! Number of steps per day. Thornley (1991) set this to 50
-   0.1              ! Number of stems in the simulation
+   0.4              ! Number of stems in the simulation (stems m-2 ground)
  FALSE              ! Boolean for Liebig's law of the minimum (TRUE) or Mitscherlich's law of constant activity (FALSE)
  FALSE              ! Boolean for reporting interval (true == daily, false == annual)
  TRUE               ! Boolean for reporting pools          (R_POOLS)

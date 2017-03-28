@@ -1,0 +1,75 @@
+
+R version 3.3.2 (2016-10-31) -- "Sincere Pumpkin Patch"
+Copyright (C) 2016 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> #========================================================================================#
+> # R script to plot uptake.txt output file from TTR model
+> #----------------------------------------------------------------------------------------#
+> 
+> # To do list:
+> # - 
+> 
+> # Add the function add.alpha and set alpha value
+> #----------------------------------------------------------------------------------------#
+> source ('setup.R')
+> 
+> # Plot pool data
+> #----------------------------------------------------------------------------------------#
+> png (file = 'fig/uptake.png')
+> 
+>   par (mar = c (5, 5, 1, 5))
+>   plot (x    = uptake [, 1],
++         y    = uptake [, 2],
++         xlab = xlab_time,
++         ylab = 'C assimilation [kg C per day]',
++         xaxt = 'n',
++         typ  = 'l',
++         lwd  = 2,
++         col  = '#91b9a4')
+>   axis (1, at = ats, label = labels)
+>   par (new = TRUE)
+>   plot (x = uptake [, 1],
++         y = uptake [, 3],
++         ylab = '',
++         xlab = '',
++         xaxt = 'n',
++         yaxt = 'n',
++         typ  = 'l',
++         lty  = 2,
++         lwd  = 2,
++         col  = '#8F2BBC')
+>   mtext ('N uptake [kg N per day]', side = 4, line = 3)
+>   axis (4)
+>   legend (x       = 0, 
++           y       = max (uptake [, 3]), 
++           legend  = c ('C','N'), 
++           box.lty = 0, 
++           lty     = c (1, 2), 
++           col     = c ('#91b9a4','#8F2BBC'), 
++           lwd     = 2)
+> dev.off ()
+null device 
+          1 
+> 
+> #========================================================================================#
+> 
+> proc.time()
+   user  system elapsed 
+  0.211   0.035   0.264 

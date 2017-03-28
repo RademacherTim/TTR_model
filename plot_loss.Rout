@@ -1,0 +1,110 @@
+
+R version 3.3.2 (2016-10-31) -- "Sincere Pumpkin Patch"
+Copyright (C) 2016 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> #========================================================================================#
+> # R script to plot loss.txt and respiration.txt output file from TTR model
+> #----------------------------------------------------------------------------------------#
+> 
+> # To do list:
+> # - Separate growth and maintenance respiration
+> # - Separate losses due to differentiation and due to litter
+> # - Create graph of total losses including loss, respiration and utilisation?!?
+> 
+> # Add the function add.alpha and set alpha value
+> #----------------------------------------------------------------------------------------#
+> source ('setup.R')
+> 
+> # Plot pLant drymass loss
+> #----------------------------------------------------------------------------------------#
+> png (file = 'fig/plant_loss.png')
+> 
+>   # Plot graph
+>   m.plot (var    = loss, 
++           ylab   = 'Total plant loss [kg dm]',
++           n_compartments = 10)
+>   
+>   # Loop through compartments
+>   compartments <- l.compartments (var = loss, n_compartments = 10)
+>   
+>   # Add a legend   
+>   m.legend (ytot = rowSums (loss [, c (2:11)]))
+> dev.off ()
+null device 
+          1 
+> 
+> 
+> # Plot total pLant respiration
+> #----------------------------------------------------------------------------------------#
+> png (file = 'fig/plant_total_respiration.png')
+> 
+>   # Plot graph
+>   m.plot (var    = resp, 
++           ylab   = 'Total plant respiration [kg C]',
++           n_compartments = 10)
+> 
+>   # Loop through compartments
+>   compartments <- l.compartments (var = resp, n_compartments = 10)
+> 
+>   # Add a legend   
+>   m.legend (ytot = rowSums (resp [, c (2:11)]))
+> dev.off ()
+null device 
+          1 
+> 
+> # Plot C utilisation by the plant
+> #----------------------------------------------------------------------------------------#
+> png (file = 'fig/plant_C_utilisation.png')
+> 
+>   # Plot graph
+>   m.plot (var    = util, 
++           ylab   = 'Total plant C utilisationn [kg C]')
+> 
+>   # Loop through compartments
+>   compartments <- l.compartments (var = util)
+> 
+>   # Add a legend   
+>   m.legend (ytot = rowSums (util [, c (2:11)]))
+> dev.off ()
+null device 
+          1 
+> 
+> # Plot N utilisation by the plant
+> #----------------------------------------------------------------------------------------#
+> png (file = 'fig/plant_N_utilisation.png')
+> 
+> # Plot graph
+> m.plot (var    = util, 
++         ylab   = 'Total plant N utilisationn [kg C]')
+> 
+> # Loop through compartments
+> compartments <- l.compartments (var = util)
+> 
+> # Add a legend   
+> m.legend (ytot = rowSums (util [, c (2:11)]))
+> dev.off ()
+null device 
+          1 
+> 
+> #========================================================================================#
+> 
+> proc.time()
+   user  system elapsed 
+  0.285   0.045   0.488 

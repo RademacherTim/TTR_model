@@ -1,5 +1,9 @@
 #========================================================================================#
 
+# Set working directory
+#----------------------------------------------------------------------------------------#
+setwd ('/Users/trademacher/Desktop/TTR_model/')
+
 ## Add an alpha value to a colour
 #----------------------------------------------------------------------------------------#
 add.alpha <- function (col, alpha=1){
@@ -20,7 +24,7 @@ alpha_A = 0.2
 c.c         <- c ('#55a51c', '#eee29f', '#faae53', '#a41034', '#af95a3')
 t.c.c       <- c ('#55a29f', '#eeee53', '#faa034', '#a415a3')
 t.n.c       <- c ('#eee51c', '#faa29f', '#a41e53', '#af9034')
-type        <- c ('#55a51c', '#eee29f', '#000000', '#8F2BBC')
+type        <- c ('#55a51c', '#eee29f', '#222222', '#8F2BBC')
 names (c.c) <- c ('Leaves',  'Branches','Stems',   'Coarse roots',  'Fine roots and mycorrhiza')
 
 # Read in the concentrations data
@@ -30,38 +34,48 @@ growth         <- read.table (file = 'tmp/growth.txt',         header = T)
 loss           <- read.table (file = 'tmp/loss.txt',           header = T)
 util           <- read.table (file = 'tmp/utilisation.txt',    header = T)
 resp           <- read.table (file = 'tmp/respiration.txt',    header = T)
-transp         <- read.table (file = 'tmp/transport.txt',    header = T)
+transp         <- read.table (file = 'tmp/transport.txt',      header = T)
 incs           <- read.table (file = 'tmp/increments.txt',     header = T)
 concentrations <- read.table (file = 'tmp/concentrations.txt', header = T)
-uptake         <- read.table (file = 'tmp/uptake.txt',     header = T)
+uptake         <- read.table (file = 'tmp/uptake.txt',         header = T)
 
 # Determine time axis
 #----------------------------------------------------------------------------------------#
-years        = as.numeric (read.table ('driver.txt', skip = 5, nrows = 1) [1])
+#years        = as.numeric (read.table ('driver.txt', skip = 5, nrows = 1) [1])
 stps_per_day = as.numeric (read.table ('driver.txt', skip = 6, nrows = 1) [1])
 #n_stems      = as.numeric (read.table ('driver.txt', skip = 6, nrows = 1) [1])
+
+lastline <-  function (filename) {
+  ## filename is of mode character
+  out <- system (sprintf ("wc -l %s", filename), intern = TRUE)
+  n <- as.integer (sub (sprintf ("[ ] * ([0-9]+)[ ]%s", filename),"\\1", out))
+  #print (n)
+  return (as.numeric (read.table ('tmp/concentrations.txt', skip = n - 1, nrows = 1) [1]))
+}
+
+tstps = lastline ('tmp/concentrations.txt')
 dt     = 1 / stps_per_day
-tstps  = years * 365.25 * stps_per_day
+years  = dt * tstps / 365.25
 days   = dt * tstps
 hours  = dt * tstps * 24.0
 
 if (days > 365) {
   xlab_time = 'Time [years]'
   xmax      = ceiling (years)
-  labels    = seq (1, xmax, by = 1)
-  ats       = seq (1, xmax, by = 1) * 365.25 / dt
+  labels    = seq (0, xmax, by = 1)
+  ats       = seq (0, xmax, by = 1) * 365.25 / dt
   xmax      = xmax * 365.25 / dt
 } else if (days > 1) {
   xlab_time = 'Time [days]'
   xmax      = ceiling (days) 
-  labels    = seq (1, xmax, by = 1)
-  ats       = seq (1, xmax, by = 1) / dt
+  labels    = seq (0, xmax, by = 1)
+  ats       = seq (0, xmax, by = 1) / dt
   xmax      = xmax / dt
 } else {
   xlab_time = 'Time [hours]'
   xmax      = ceiling (hours)
-  labels    = seq (1, xmax, by = 1)
-  ats       = seq (1, xmax, by = 1) / (24.0 * dt)
+  labels    = seq (0, xmax, by = 1)
+  ats       = seq (0, xmax, by = 1) / (24.0 * dt)
   xmax      = xmax / (24.0 * dt)
 }
 
@@ -82,7 +96,7 @@ m.plot <- function (var,
   } else {
     par (mar = c (5, 5, 1, 5))
   }
-
+  
   # Determine columns 
   if (columns [1] == 0) {
     i1 = offset + 1
@@ -99,7 +113,7 @@ m.plot <- function (var,
   } else {
     ymax = max (var [, index])
   }
-   
+  
   
   # Plot 
   plot (x = var [, 1],
@@ -152,34 +166,34 @@ l.compartments <- function (var, offset = 1, n_compartments = 5, poly = TRUE, co
   
   # Loop over the compartments
   sapply (1:n_compartments, function (i) 
-    {
-      i1 = i + offset
-      i2 = i + offset + 1
-      i3 = offset + n_compartments
-      #print (c (i, i1, i2, i3))
+  {
+    i1 = i + offset
+    i2 = i + offset + 1
+    i3 = offset + n_compartments
+    #print (c (i, i1, i2, i3))
     
-      if (poly) {
-        # Figure out the appropriate y-coordinates
-        y1.1 = if      (i <   n_compartments)      {rowSums (var [, c (i1:i3)])} else {var [, i3]}
-        y2.1 = if      (i <  (n_compartments - 1)) {rowSums (var [, c (i2:i3)])} 
-               else if (i == (n_compartments - 1)) {var [, i3]}
-               else                                {rep (0, length (var [, 1]))}
-      } else {
-        y1.1 = var [, i1]
-        y2.1 = rep (0, length (var [, 1]))
-      }
-      #print (head (y1.1))
-      #print (head (y2.1))
-    
-      # Plot compartment
-      s.lines (x      = var [, 1],
-               y1     = y1.1,
-               y2     = y2.1,
-               colour = colours [i],
-               poly   = poly)
-      
-      return (NULL)
+    if (poly) {
+      # Figure out the appropriate y-coordinates
+      y1.1 = if      (i <   n_compartments)      {rowSums (var [, c (i1:i3)])} else {var [, i3]}
+      y2.1 = if      (i <  (n_compartments - 1)) {rowSums (var [, c (i2:i3)])} 
+      else if (i == (n_compartments - 1)) {var [, i3]}
+      else                                {rep (0, length (var [, 1]))}
+    } else {
+      y1.1 = var [, i1]
+      y2.1 = rep (0, length (var [, 1]))
     }
+    #print (head (y1.1))
+    #print (head (y2.1))
+    
+    # Plot compartment
+    s.lines (x      = var [, 1],
+             y1     = y1.1,
+             y2     = y2.1,
+             colour = colours [i],
+             poly   = poly)
+    
+    return (NULL)
+  }
   )
   return (NULL)
 }
