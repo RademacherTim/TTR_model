@@ -10,15 +10,15 @@ subroutine output
  !---------------------------------------------------------------------------------------!
  ! Formats
  !---------------------------------------------------------------------------------------!
- 1000 format (i15, 20f15.8) ! pools.txt
+ 1000 format (i15, 20f15.3) ! pools.txt
  1001 format (i15, 11f15.8) ! growth.txt
  1002 format (i15, 10f15.8) ! loss.txt
  1003 format (i15, 10f15.8) ! utilisation.txt
  1004 format (i15, 10f15.8) ! respiration.txt
- 1005 format (i15,  8f15.8) ! transport.txt
+ 1005 format (i15, 12f15.8) ! transport.txt
  1006 format (i15, 21f15.8) ! increments.txt
  1007 format (i15, 11f15.8) ! concentrations.txt
- 1008 format (i15,  4f15.8) ! uptake.txt
+ 1008 format (i15,  7f15.8, 1f15.3) ! uptake.txt
  
  !---------------------------------------------------------------------------------------!
  ! Write values to pools.txt output file
@@ -70,7 +70,8 @@ subroutine output
  !---------------------------------------------------------------------------------------!
  if (R_TRANSPORT) then   
    write (25, 1005) t, T_C_l_b, T_C_b_s, T_C_s_c, T_C_c_f,                               &
-                       T_N_f_c, T_N_c_s, T_N_s_b, T_N_b_l
+                       T_N_f_c, T_N_c_s, T_N_s_b, T_N_b_l,                               &
+                       g_C_l_b, g_C_b_s, g_C_s_c, g_C_c_f
  end if
  
  !---------------------------------------------------------------------------------------!
@@ -96,20 +97,8 @@ subroutine output
  ! Write values to pools.txt output file
  !---------------------------------------------------------------------------------------!
  if (R_UPTAKE) then  
-     write (28, 1008) t, P_carb, U_N, U_N_amm, U_N_nit   
+     write (28, 1008) t, P_carb, U_N, U_N_amm, U_N_nit, P_c, P_l, P_max, LAI
  end if 
-   
- ! Close output files
- !---------------------------------------------------------------------------------------!
- !close (20) ! Close pools.txt output file
- !close (21) ! Close growth.txt output file
- !close (22) ! Close loss.txt output file
- !close (23) ! Close utilisation.txt output file
- !close (24) ! Close respiration.txt output file
- !close (25) ! Close transport.txt output file
- !close (26) ! Close increments.txt output file
- !close (27) ! Close concentrations.txt output file
- !close (28) ! Close uptake.txt output file
  
 !----------------------------------------------------------------------------------------!
 end subroutine output

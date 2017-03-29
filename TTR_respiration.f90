@@ -11,29 +11,27 @@ subroutine respiration
  !---------------------------------------------------------------------------------------!
 
    !-------------------------------------------------------------------------------------!
-   ! Calculate maintenance respiration coefficients
+   ! Calculate maintenance respiration coefficients             ([d-1]) TTR should be unitless
    !-------------------------------------------------------------------------------------!
    m_M_l_X = m_M_l_X20 * f_T_air    ! For leaves
    m_A_b   = m_A_b20   * f_T_air    ! For branches
    m_A_s   = m_A_s20   * f_T_air    ! For stems
    m_A_c   = m_A_c20   * f_T_soil   ! For coarse roots
    m_M_f_X = m_M_f_X20 * f_T_soil   ! For fine roots and mycorrhiza
-   !-------------------------------------------------------------------------------------!
-   ! Maintenance respiration (R_m) 
-   !-------------------------------------------------------------------------------------!
-   R_l_X_m = (m_M_l_X * f_C_l_X * M_l_X) * (C_l) / (C_l + K_m_l_C) ! In leave
-   R_b_X_m = m_A_b * A_b * (C_b) / (C_b + K_m_b_C)                 ! In branches
-   R_s_X_m = m_A_s * A_s * (C_s) / (C_s + K_m_s_C)                 ! In stems
-   R_c_X_m = m_A_c * A_c * (C_c) / (C_c + K_m_c_c)                 ! In coarse roots
-   R_f_X_m = m_M_f_X * f_C_f_X * M_f_X * (C_f / (C_f + K_m_f_C))   ! In fine roots
-   !-------------------------------------------------------------------------------------!
-   !write (*, '(3f12.8)') C_b, M_b_C, M_b_M
-   !write (*, '(a15, 5a12)') ' ', 'R_l_X_m', 'R_b_X_m', 'R_s_X_m', 'R_c_X_m', 'R_f_X_m'
-   !write (*, '(a15, 5f12.5)') 'Respiration ', R_l_X_m, R_b_X_m, R_s_X_m, R_c_X_m, R_f_X_m
-   !write (*, *)
+   
    
    !-------------------------------------------------------------------------------------!
-   ! Growth respiration (R_G) 
+   ! Maintenance respiration (R_m)                              ([kg C] [stem]-1 [d]-1)
+   !-------------------------------------------------------------------------------------!
+   R_l_X_m = m_M_l_X * f_C_l_X * M_l_X * C_l / (C_l + K_m_l_C)  ! In leave
+   R_b_X_m = m_A_b * A_b * C_b               / (C_b + K_m_b_C)  ! In branches
+   R_s_X_m = m_A_s * A_s * C_s               / (C_s + K_m_s_C)  ! In stems
+   R_c_X_m = m_A_c * A_c * C_c               / (C_c + K_m_c_c)  ! In coarse roots
+   R_f_X_m = m_M_f_X * f_C_f_X * M_f_X * C_f / (C_f + K_m_f_C)  ! In fine roots
+
+   
+   !-------------------------------------------------------------------------------------!
+   ! Growth respiration (R_G)                                   ([kg C] [stem]-1 [d-1])
    !-------------------------------------------------------------------------------------!
    R_l_X_G = ((1.0 - Y_l_M) * f_C_l_M * G_M_l_M) / (Y_l_M) +                             &
              ((1.0 - Y_l_X) * f_C_l_X * G_M_l_X) / (Y_l_X)
@@ -45,40 +43,29 @@ subroutine respiration
              ((1.0 - Y_c_X) * f_C_c_X * G_M_c_X) / (Y_c_X)
    R_f_X_G = ((1.0 - Y_f_M) * f_C_f_M * G_M_f_M) / (Y_f_M) +                             &
              ((1.0 - Y_f_X) * f_C_f_X * G_M_f_X) / (Y_f_X)
+
+
+   !-------------------------------------------------------------------------------------!
+   ! Respiration due to N uptake (R_U_N)                        ([kg C] [stem]-1 [d]-1)
+   !-------------------------------------------------------------------------------------!
    R_U_N   = U_N_amm * c_U_N_amm + U_N_nit * c_U_N_nit
-   !-------------------------------------------------------------------------------------!
-   !write (*, '(a15, 5a12)') ' ', 'R_l_X_G', 'R_b_X_G', 'R_s_X_G', 'R_c_X_G', 'R_f_X_G'
-   !write (*, '(a15, 5f12.5)') 'Respiration ', R_l_X_G, R_b_X_G, R_s_X_G, R_c_X_G, R_f_X_G
-   !write (*, *)
+
    
    !-------------------------------------------------------------------------------------!
-   ! Set subroutine outputs to zero - TTR
-   !-------------------------------------------------------------------------------------!
-   !R_l_X_m = 0.0
-   !R_b_X_m = 0.0
-   !R_s_X_m = 0.0
-   !R_c_X_m = 0.0
-   !R_f_X_m = 0.0
-   !R_l_X_G = 0.0
-   !R_b_X_G = 0.0
-   !R_s_X_G = 0.0
-   !R_c_X_G = 0.0
-   !R_f_X_G = 0.0
-   !R_U_N   = 0.0
-   
-   !-------------------------------------------------------------------------------------!
-   ! Convert to respiration per timestep
+   ! Convert to respiration per timestep                        ([kg C] [stem]-1 [tsp]-1)
    !-------------------------------------------------------------------------------------!
    R_l_X_m = R_l_X_m * dt
    R_b_X_m = R_b_X_m * dt
    R_s_X_m = R_s_X_m * dt
    R_c_X_m = R_c_X_m * dt
    R_f_X_m = R_f_X_m * dt
+   !-------------------------------------------------------------------------------------!
    R_l_X_G = R_l_X_G * dt
    R_b_X_G = R_b_X_G * dt
    R_s_X_G = R_s_X_G * dt
    R_c_X_G = R_c_X_G * dt
    R_f_X_G = R_f_X_G * dt
+   !-------------------------------------------------------------------------------------!
    R_U_N   = R_U_N   * dt
    
 !----------------------------------------------------------------------------------------!

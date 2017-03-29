@@ -1,0 +1,115 @@
+
+R version 3.3.2 (2016-10-31) -- "Sincere Pumpkin Patch"
+Copyright (C) 2016 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> #========================================================================================#
+> # R script to plot pools.txt output file from TTR model
+> #----------------------------------------------------------------------------------------#
+> 
+> # To do list:
+> # - Add hatching for shoot and root in polygons to graphs
+> 
+> # Add the function add.alpha and set alpha value
+> #----------------------------------------------------------------------------------------#
+> source ('setup.R')
+> 
+> # Plot PLant C
+> #----------------------------------------------------------------------------------------#
+> png (file = 'fig/plant_C_pools.png')
+>   
+>   # Plot graph 
+>   m.plot (var            = pools, 
++           n_compartments = 5,
++           ylab           = 'Plant carbon [kg C]')
+> 
+>   # Loop through compartments
+>   compartments <- l.compartments (var = pools)
+>   
+>   # Add a legend   
+>   m.legend (ytot = rowSums (pools [, c (2:6)]))
+> dev.off ()
+null device 
+          1 
+> 
+> 
+> # Plot plant N
+> #----------------------------------------------------------------------------------------#
+> png (file = 'fig/plant_N_pools.png')
+> 
+>   # Plot graph 
+>   m.plot (var            = pools, 
++           offset         = 6,
++           ylab           = 'Plant nitrogen [kg N]')
+> 
+>   # Loop through compartments
+>   compartments <- l.compartments (var    = pools,
++                                   offset = 6)
+> 
+>   # Add a legend   
+>   m.legend (ytot = rowSums (pools [, c (7:11)]))
+> dev.off ()
+null device 
+          1 
+> 
+> # Plot M
+> #----------------------------------------------------------------------------------------#
+> png (file = 'fig/plant_M_pools.png')
+> 
+>   # Plot graph 
+>   m.plot (var            = pools, 
++           offset         = 11,
++           ylab           = 'Plant meristematic drymass [kg dm]')
+> 
+>   # Loop through compartments
+>   compartments <- l.compartments (var    = pools,
++                                   offset = 11)
+> 
+>   # Add a legend   
+>   m.legend (ytot = rowSums (pools [, c (12:16)]))
+> 
+>   # Set plot margins
+>   par (mar = c (5, 5, 1, 1))
+> dev.off ()
+null device 
+          1 
+> 
+> # Plot X
+> #----------------------------------------------------------------------------------------#
+> png (file = 'fig/plant_X_pools.png')
+> 
+>   # Plot graph 
+>   m.plot (var            = pools, 
++           offset         = 16,
++           ylab           = 'Plant structural drymass [kg dm]')
+> 
+>   # Loop through compartments
+>   compartments <- l.compartments (var    = pools,
++                                   offset = 16)
+> 
+>   # Add a legend   
+>   m.legend (ytot = rowSums (pools [, c (17:21)]))
+> dev.off ()
+null device 
+          1 
+> #========================================================================================#
+> 
+> proc.time()
+   user  system elapsed 
+  0.270   0.047   0.607 

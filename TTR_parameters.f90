@@ -75,8 +75,8 @@ module TTR_parameters
  real (dp), parameter :: C_c_M_pot =  20.0  ! Coarse roots
  real (dp), parameter :: C_f_M_pot =  20.0  ! Fine roots and mycorrhiza
  !---------------------------------------------------------------------------------------!
- real (dp), parameter :: c_a_l_amx =   5.0  ! Max value of incremental SPA ([m]2 [kg Xdm]-1)
- real (dp), parameter :: c_a_l_a_C =   2.5  ! Specific leaf area (SPA) parameter ([C]-1)
+ real (dp), parameter :: c_SLA_max =   5.0  ! Max value of incremental SLA ([m]2 [kg Xdm]-1)
+ real (dp), parameter :: c_SLA_C   =   2.5  ! Carbon concentration specific parameter for SLAS ([C]-1)
  !---------------------------------------------------------------------------------------!
  ! Intrinsic differentiation parameter of meristem ([d]-1)
  !---------------------------------------------------------------------------------------!

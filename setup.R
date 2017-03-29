@@ -1,5 +1,9 @@
 #========================================================================================#
 
+# Set working directory
+#----------------------------------------------------------------------------------------#
+setwd ('/Users/trademacher/Desktop/TTR_model/')
+
 ## Add an alpha value to a colour
 #----------------------------------------------------------------------------------------#
 add.alpha <- function (col, alpha=1){
@@ -20,7 +24,7 @@ alpha_A = 0.2
 c.c         <- c ('#55a51c', '#eee29f', '#faae53', '#a41034', '#af95a3')
 t.c.c       <- c ('#55a29f', '#eeee53', '#faa034', '#a415a3')
 t.n.c       <- c ('#eee51c', '#faa29f', '#a41e53', '#af9034')
-type        <- c ('#55a51c', '#eee29f', '#000000', '#8F2BBC')
+type        <- c ('#55a51c', '#eee29f', '#222222', '#8F2BBC')
 names (c.c) <- c ('Leaves',  'Branches','Stems',   'Coarse roots',  'Fine roots and mycorrhiza')
 
 # Read in the concentrations data
@@ -92,7 +96,7 @@ m.plot <- function (var,
   } else {
     par (mar = c (5, 5, 1, 5))
   }
-
+  
   # Determine columns 
   if (columns [1] == 0) {
     i1 = offset + 1
@@ -109,7 +113,7 @@ m.plot <- function (var,
   } else {
     ymax = max (var [, index])
   }
-   
+  
   
   # Plot 
   plot (x = var [, 1],
@@ -162,34 +166,34 @@ l.compartments <- function (var, offset = 1, n_compartments = 5, poly = TRUE, co
   
   # Loop over the compartments
   sapply (1:n_compartments, function (i) 
-    {
-      i1 = i + offset
-      i2 = i + offset + 1
-      i3 = offset + n_compartments
-      #print (c (i, i1, i2, i3))
+  {
+    i1 = i + offset
+    i2 = i + offset + 1
+    i3 = offset + n_compartments
+    #print (c (i, i1, i2, i3))
     
-      if (poly) {
-        # Figure out the appropriate y-coordinates
-        y1.1 = if      (i <   n_compartments)      {rowSums (var [, c (i1:i3)])} else {var [, i3]}
-        y2.1 = if      (i <  (n_compartments - 1)) {rowSums (var [, c (i2:i3)])} 
-               else if (i == (n_compartments - 1)) {var [, i3]}
-               else                                {rep (0, length (var [, 1]))}
-      } else {
-        y1.1 = var [, i1]
-        y2.1 = rep (0, length (var [, 1]))
-      }
-      #print (head (y1.1))
-      #print (head (y2.1))
-    
-      # Plot compartment
-      s.lines (x      = var [, 1],
-               y1     = y1.1,
-               y2     = y2.1,
-               colour = colours [i],
-               poly   = poly)
-      
-      return (NULL)
+    if (poly) {
+      # Figure out the appropriate y-coordinates
+      y1.1 = if      (i <   n_compartments)      {rowSums (var [, c (i1:i3)])} else {var [, i3]}
+      y2.1 = if      (i <  (n_compartments - 1)) {rowSums (var [, c (i2:i3)])} 
+      else if (i == (n_compartments - 1)) {var [, i3]}
+      else                                {rep (0, length (var [, 1]))}
+    } else {
+      y1.1 = var [, i1]
+      y2.1 = rep (0, length (var [, 1]))
     }
+    #print (head (y1.1))
+    #print (head (y2.1))
+    
+    # Plot compartment
+    s.lines (x      = var [, 1],
+             y1     = y1.1,
+             y2     = y2.1,
+             colour = colours [i],
+             poly   = poly)
+    
+    return (NULL)
+  }
   )
   return (NULL)
 }

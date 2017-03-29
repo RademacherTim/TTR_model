@@ -10,7 +10,7 @@ subroutine loss
    !-------------------------------------------------------------------------------------!
    ! Losses (L) to differentiation and to litter for leaves
    !-------------------------------------------------------------------------------------!
-   ! Calculate the differentiation coefficient
+   ! Calculate the differentiation coefficient      ([fraction] [d-1])
    !-------------------------------------------------------------------------------------!
    k_dif_l     = k_dif_l20   * f_T_air
    k_dif_b     = k_dif_b20   * f_T_air
@@ -18,16 +18,7 @@ subroutine loss
    k_dif_c     = k_dif_c20   * f_T_soil
    k_dif_f     = k_dif_f20   * f_T_soil
    !-------------------------------------------------------------------------------------!
-   ! Calculate the litter coefficient 
-   !-------------------------------------------------------------------------------------!
-   k_l_X_lit   = k_l_X_lit20 * f_T_air
-   k_A_l_lit   = k_A_l_lit20 * f_T_air
-   k_b_X_lit   = k_b_X_lit20 * f_T_air
-   k_s_X_lit   = k_s_X_lit20 * f_T_air
-   k_c_X_lit   = k_c_X_lit20 * f_T_soil
-   k_f_X_lit   = k_f_X_lit20 * f_T_soil
-   !-------------------------------------------------------------------------------------!
-   ! Calculate losses to differentiation
+   ! Calculate losses to differentiation            ([kg dm] [d-1])
    !-------------------------------------------------------------------------------------!
    L_M_l_M_dif = k_dif_l     * M_l_M
    L_M_b_M_dif = k_dif_b     * M_b_M
@@ -35,13 +26,24 @@ subroutine loss
    L_M_c_M_dif = k_dif_c     * M_c_M
    L_M_f_M_dif = k_dif_f     * M_f_M
    !-------------------------------------------------------------------------------------!
-   ! Calculate losses to litter
+   ! Calculate the litter coefficient               ([fraction] [d-1])
+   !-------------------------------------------------------------------------------------!
+   k_A_l_lit   = k_A_l_lit20 * f_T_air
+   k_l_X_lit   = k_l_X_lit20 * f_T_air
+   k_b_X_lit   = k_b_X_lit20 * f_T_air
+   k_s_X_lit   = k_s_X_lit20 * f_T_air
+   k_c_X_lit   = k_c_X_lit20 * f_T_soil
+   k_f_X_lit   = k_f_X_lit20 * f_T_soil
+   !-------------------------------------------------------------------------------------!
+   ! Calculate losses to litter                     ([kg dm] [d-1])
    !-------------------------------------------------------------------------------------!
    L_M_l_X_lit = k_l_X_lit   * M_l_X
    L_M_b_X_lit = k_b_X_lit   * M_b_X 
    L_M_s_X_lit = k_s_X_lit   * M_s_X
    L_M_c_X_lit = k_c_X_lit   * M_c_X
    L_M_f_X_lit = k_f_X_lit   * M_f_X
+   !-------------------------------------------------------------------------------------!
+   ! Calculate leaf area losses to litter           ([m2] [d-1])
    !-------------------------------------------------------------------------------------!
    L_A_l       = k_A_l_lit   * A_l
    !-------------------------------------------------------------------------------------!
@@ -54,23 +56,9 @@ subroutine loss
    !                                               L_M_c_M_dif, L_M_c_X_lit, L_M_f_M_dif,&
    !                                               L_M_f_X_lit
    !write (*, *)
-    
-   !-------------------------------------------------------------------------------------!
-   ! Set subroutine outputs to zero TTR
-   !-------------------------------------------------------------------------------------!
-   !L_M_l_M_dif = 0.0
-   !L_M_b_M_dif = 0.0
-   !L_M_s_M_dif = 0.0
-   !L_M_c_M_dif = 0.0
-   !L_M_f_M_dif = 0.0
-   !L_M_l_X_lit = 0.0
-   !L_M_b_X_lit = 0.0
-   !L_M_s_X_lit = 0.0
-   !L_M_c_X_lit = 0.0
-   !L_M_f_X_lit = 0.0
    
    !-------------------------------------------------------------------------------------!
-   ! Convert to loss per timestep
+   ! Convert to loss per timestep                 ([kg dm] [tsp-1])
    !-------------------------------------------------------------------------------------!
    L_M_l_M_dif = L_M_l_M_dif * dt
    L_M_b_M_dif = L_M_l_M_dif * dt
@@ -82,6 +70,8 @@ subroutine loss
    L_M_s_X_lit = L_M_l_X_lit * dt
    L_M_c_X_lit = L_M_l_X_lit * dt
    L_M_f_X_lit = L_M_l_X_lit * dt
+   !-------------------------------------------------------------------------------------!
+   L_A_l       = L_A_l       * dt               ! ([kg dm] [tsp-1])
 
    
 !----------------------------------------------------------------------------------------!
