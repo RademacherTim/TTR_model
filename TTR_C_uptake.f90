@@ -51,7 +51,7 @@ subroutine C_uptake
    ! O = theta * P_l**2 - P_l * (alpha * I_leaf + P_max) + alpha * P_max for P_l
    
    !-------------------------------------------------------------------------------------!
-   ! Leaf-level photosynthesis                               ([kg CO2] [m]-2 leaf [s]-1)
+   ! Leaf-level photosynthesis                                ([kg CO2] [m]-2 leaf [s]-1)
    ! Explain exactly where this comes from
    !-------------------------------------------------------------------------------------!
    P_l     = 1 / (2 * theta)                                                             &
@@ -62,7 +62,7 @@ subroutine C_uptake
    ! TTR Need to check this for units!
    
    !-------------------------------------------------------------------------------------!
-   ! Canopy-level photosynthesis                             ([kg CO2] [m]-2 leaf [s]-1)
+   ! Canopy-level photosynthesis                              ([kg CO2] [m]-2 leaf [s]-1)
    ! Integrate across the canopy assuming ... (Thornley & Johnson, 1990, p. 249)
    ! P_c tends to be slightly underestimated (ibid.)
    !-------------------------------------------------------------------------------------!
@@ -70,13 +70,13 @@ subroutine C_uptake
    
    
    !-------------------------------------------------------------------------------------!
-   ! Conversion to uptake of carbon per stem per day         ([kg C] [stem]-1 [d]-1)
+   ! Conversion to uptake of carbon per stem per day          ([kg C] [stem]-1 [d]-1)
    !-------------------------------------------------------------------------------------!                     
    P_carb  = (12.0 / 44.0) * ((h * P_c) / (n_stems))   
 
 
    !-------------------------------------------------------------------------------------!
-   ! Convert to uptake per timestep                          ([kg C] [stem]-1 [tsp]-1)
+   ! Convert to uptake per timestep                           ([kg C] [stem]-1 [tsp]-1)
    !-------------------------------------------------------------------------------------!
    P_carb = P_carb * dt   
    
