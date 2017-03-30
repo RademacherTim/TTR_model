@@ -108,14 +108,10 @@ if [[ $var1 == "output" ]] ; then
   #--------------------------------------------------------------------------------------#
   cd ..
 elif [[ $var1 == "thornley" ]] ; then
-<<<<<<< HEAD
-  R CMD BATCH plot_thornley.R
-=======
   R CMD BATCH plot_thornley_fig3.R
   R CMD BATCH plot_thornley_fig4.R
   R CMD BATCH plot_thornley_fig5.R
   R CMD BATCH plot_thornley_fig6.R
->>>>>>> Tim's-office-iMac
 fi
 
 
